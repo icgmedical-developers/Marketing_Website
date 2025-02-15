@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-#)@dzya!f^swh0&&l(akdlcq7^obs$-2as=xm8h$vq7hcw@h0z'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -124,6 +124,6 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Add app-level static directory
-# STATICFILES_DIRS = [
-#     BASE_DIR / "static",  # Add this if you want to include project-level static files
-# ]
+STATICFILES_DIRS = [
+    BASE_DIR / "static",  # Add this if you want to include project-level static files
+]
