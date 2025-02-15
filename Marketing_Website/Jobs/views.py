@@ -34,7 +34,7 @@ def extract_values(html):
 def Homepage(request):
     recent_jobs = Job.objects.all().order_by('-post_date')[:8]  # Fetch latest 8 jobs
     print(recent_jobs)
-    return render(request,'Jobs/index.html', {'recent_jobs':recent_jobs})
+    return render(request,'jobs/index.html', {'recent_jobs':recent_jobs})
 
 def get_text(element):
     """Extract text from an XML element, return an empty string if None."""
@@ -144,10 +144,10 @@ def ShowJobs(request):
 
     print(page_obj.object_list)  # Check the jobs on the current page
 
-    return render(request, 'Jobs/view_jobs.html', {'page_obj': page_obj})
+    return render(request, 'jobs/view_jobs.html', {'page_obj': page_obj})
 
 def job_detail(request, job_title_id):
     job = get_object_or_404(Job, job_title_id=job_title_id)
-    return render(request, 'Jobs/job_detail.html', {'job': job})
+    return render(request, 'jobs/job_detail.html', {'job': job})
 
         
