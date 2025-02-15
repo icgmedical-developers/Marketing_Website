@@ -46,7 +46,16 @@ class Job(models.Model):
         return f"{self.job_title} ({self.job_title_id})"
 
     def save(self, *args, **kwargs):
-        """Auto-generate slug from job title and ID if not provided."""
+        """Auto-generate a unique slug from job title and job title ID."""
         if not self.slug:
-            self.slug = slugify(f"{self.job_title}-{self.job_title_id}")
+            base_slug = slugify(f"{self.job_title}-{self.job_title_id}")
+            slug = base_slug
+            count = 1
+            
+            while Job.objects.filter(slug=slug).exists():
+                slug = f"{base_slug}-{count}"
+                count += 1
+
+            self.slug = slug
+
         super().save(*args, **kwargs)
