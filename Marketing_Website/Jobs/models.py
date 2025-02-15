@@ -5,7 +5,7 @@ from django.utils.text import slugify
 class Job(models.Model):
     job_title = models.CharField(max_length=255)
     job_title_id= models.CharField(max_length=20)
-    slug = models.SlugField(unique=True, blank=True, null=True)  # Auto-generated slug
+    slug = models.SlugField(max_length=255,unique=True, blank=True, null=True)  # Auto-generated slug
     facility_name = models.CharField(max_length=255)
     bill_rate = models.CharField(max_length=50, blank=True, null=True)
     pay_rate = models.CharField(max_length=50, blank=True, null=True)
