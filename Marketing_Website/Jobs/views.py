@@ -8,6 +8,7 @@ from datetime import datetime
 from django.core.paginator import Paginator
 from django.shortcuts import render
 from django.shortcuts import render, get_object_or_404
+from .list_of_values import specialities, category_subcategories, categories_discipline
 
 def format_date(date_str):
     """Convert date from DD/MM/YYYY to YYYY-MM-DD format."""
@@ -144,10 +145,32 @@ def ShowJobs(request):
 
     print(page_obj.object_list)  # Check the jobs on the current page
 
-    return render(request, 'jobs/view_jobs.html', {'page_obj': page_obj})
+    return render(request, 'jobs/view_jobs.html', {'page_obj': page_obj, 'specialities': specialities, "category_subcategories": category_subcategories, "categories_discipline":categories_discipline })
 
 def job_detail(request, job_title_id):
     job = get_object_or_404(Job, job_title_id=job_title_id)
     return render(request, 'jobs/job_detail.html', {'job': job})
 
-        
+def ShowJob_Category(request, category):
+    # Dictionary to map categories to their corresponding filter values
+    print(category)
+    category_filters = {
+        "travel": ["GS US Travel"],
+        "per-diem": ["GS US Per Diem", "GS US Provider Perm"],
+        "allied": ["GS US Allied"],
+        "physician": ["GS US Locums"],
+    }
+
+    # Fetch jobs based on category, default to an empty list if category not found
+    filter_values = category_filters.get(category, [])
+    print(filter_values)
+    all_jobs = Job.objects.filter(business_type__in=filter_values).order_by('post_date') if filter_values else Job.objects.none()
+
+    paginator = Paginator(all_jobs, 18)  # Show 18 jobs per page
+    
+    page_number = request.GET.get('page')  # Get the current page number from the URL
+    page_obj = paginator.get_page(page_number)  # Get the jobs for the current page
+
+    print(page_obj.object_list)  # Check the jobs on the current page
+
+    return render(request, 'jobs/view_jobs.html', {'page_obj': page_obj, 'specialities': specialities, "category_subcategories": category_subcategories, "categories_discipline":categories_discipline})

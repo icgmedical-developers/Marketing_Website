@@ -121,34 +121,26 @@
                 </div>
 
                 <!-- 📂 Job Type -->
-                <label class="form-label">Job Type</label>
-                <select class="form-select mb-3">
-                    <option>All</option>
-                    <option>Full-time</option>
-                    <option>Part-time</option>
-                    <option>Remote</option>
+                <label class="form-label">Category</label>
+                <select class="form-select mb-3" id="category" onchange="updateSubCategory()">
+                    <option value="">Select Category</option>
+                    {% for category, subcategories in category_subcategories %}
+                        <option value="{{ category }}">{{ category }}</option>
+                    {% endfor %}
                 </select>
 
-                <!-- 📍 Location -->
-                <label class="form-label">Location</label>
-                <div class="input-group mb-3">
-                    <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
-                    <input type="text" class="form-control" placeholder="Enter location">
-                </div>
+                <select class="form-select mb-3" id="subcategory">
+                    <option value="">Select Subcategory</option>
+                    <!-- Subcategories will be populated dynamically -->
+                </select>
 
                 <!-- 🏥 Specialitys -->
                 <label class="form-label">Speciality</label>
                 <select class="form-select mb-3">
-                    <option>All</option>
-                    <option>Nursing</option>
-                    <option>Engineering</option>
-                    <option>Marketing</option>
-                    <option>IT & Software</option>
+                    {% for speciality in specialities %}
+                        <option>{{ speciality }}</option>
+                    {% endfor %}
                 </select>
-
-                <!-- 💰 Salary Range -->
-                <label class="form-label">Salary Range</label>
-                <input type="range" class="form-range mb-3">
 
                 <!-- ✅ Apply Filters Button -->
                 <button class="btn btn-primary w-100">Apply Filters</button>
@@ -210,5 +202,35 @@
 {% if page_obj.number > page_obj.paginator.num_pages %}
 <p class="text-center text-danger mt-3">No jobs exist on this page.</p>
 {% endif %}
+
+<script>
+    // JavaScript object to store subcategories for each category
+    const subcategories = {
+        {% for category, subcategories_list in category_subcategories %}
+            "{{ category }}": [
+                {% for subcategory in subcategories_list %}
+                    "{{ subcategory }}"{% if not loop.last %}, {% endif %}
+                {% endfor %}
+            ]{% if not loop.last %},{% endif %}
+        {% endfor %}
+    };
+
+    function updateSubCategory() {
+        const category = document.getElementById("category").value;
+        const subCategorySelect = document.getElementById("subcategory");
+
+        // Clear the current options
+        subCategorySelect.innerHTML = "<option value=''>Select Subcategory</option>";
+
+        // Add the new options based on the selected category
+        const options = subcategories[category] || [];
+        options.forEach(subcategory => {
+            const option = document.createElement("option");
+            option.value = subcategory;
+            option.textContent = subcategory;
+            subCategorySelect.appendChild(option);
+        });
+    }
+</script>
 
 {% endblock %}

@@ -8,8 +8,6 @@
 {% block design %}
 <style>
     /* Ensure uniform height for the carousel */
-   
-  
     #carouselExampleAutoplaying .carousel-item img {
       width: 100%;
       height: auto;
@@ -98,41 +96,125 @@
   .job-card:hover {
     transform: scale(1.05);
   }
+
+  .col-md-3 .card-title {
+      text-decoration: none; /* Remove underline */
+      color: inherit; /* Ensure link text color inherits from the parent element */
+  }
+
+  .col-md-3 .card {
+      height: 100px;
+      border-radius: 15px; /* Rounded borders */
+      border: 1px solid #ddd; /* Light border */
+      overflow: hidden; /* Ensure content stays within border */
+      transition: transform 0.3s ease, box-shadow 0.3s ease; /* Animation for hover effect */
+  }
+
+  .col-md-3 .card-body {
+      padding: 20px;
+      text-align: center;
+  }
+
+  .col-md-3 .card img {
+      margin-bottom: 15px; /* Space between image and text */
+      max-width: 60px; /* Ensure image doesn't grow too large */
+      border-radius: 50%; /* Rounded image */
+  }
+
+  .col-md-3 .card:hover {
+      transform: translateY(-10px); /* Lift effect */
+      box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.1); /* Subtle shadow on hover */
+  }
+
+  .col-md-3 .card-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #333;
+  }
+
+  .col-md-3 .card-hover {
+      background-color: #f9f9f9;
+      transition: all 0.3s ease;
+  }
+
+  .col-md-3 .card-hover:hover {
+      background-color: #e3e3e3; /* Change background color on hover */
+  }
   </style>
   
 {% endblock %}
 
 {% block content %}
 <div id="carouselExampleAutoplaying" class="carousel slide position-relative" data-bs-ride="carousel">
-    <div class="carousel-inner">
+  <div class="carousel-inner">
       <div class="carousel-item active">
-        <img src="https://www.greenstaffmedical.com/images/header_new_image%20-%20Copy.jpg" class="d-block w-100 img-fluid" alt="Jobs Image">
+          <img src="https://www.greenstaffmedical.com/images/header_new_image%20-%20Copy.jpg" class="d-block w-100 img-fluid" alt="Jobs Image">
       </div>
-    </div>
-  
-    <!-- Overlay -->
-    <div class="carousel-overlay"></div>
-  
-    <!-- Centered Content -->
-    <div class="carousel-caption-custom">
+  </div>
+
+  <!-- Overlay -->
+  <div class="carousel-overlay"></div>
+
+  <!-- Centered Content -->
+  <div class="carousel-caption-custom">
       <h2 class="fw-bold">Search For Your Next Job</h2>
       <a href="{% url 'ShowJobs' %}" class="btn explore-btn text-white">
-        <i class="fas fa-search"></i> Explore Jobs
+          <i class="fas fa-search"></i> Explore Jobs
       </a>
-    </div>
+
+      <!-- Cards Section -->
+      <div class="container mt-5">
+        <div class="row text-center">
+            <div class="col-md-3 mb-4">
+                <a href="{% url 'ShowJob_Category' 'travel' %}" class="card">
+                    <div class="card-body d-flex align-items-center justify-content-center">
+                      <img src="{% static 'Jobs/Travel.png' %}" alt="Travel Jobs" class="img-fluid me-3" style="max-width: 40px;">
+                      <h5 class="card-title mb-0">Travel Jobs</h5>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-3 mb-4">
+                <a href="{% url 'ShowJob_Category' 'per-diem' %}" class="card">
+                    <div class="card-body d-flex align-items-center justify-content-center">
+                        <img src="{% static 'Jobs/Per-Diem Jobs.png' %}" alt="Perm-Diem Jobs" class="img-fluid me-3" style="max-width: 40px;">
+                        <h5 class="card-title mb-0">Perm-Diem Jobs</h5>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-3 mb-4">
+                <a href="{% url 'ShowJob_Category' 'allied' %}" class="card">
+                    <div class="card-body d-flex align-items-center justify-content-center">
+                        <img src="{% static 'Jobs/Allied Services.png' %}" alt="Temp Jobs" class="img-fluid me-3" style="max-width: 40px;">
+                        <h5 class="card-title mb-0">Allied Services</h5>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-3 mb-4">
+                <!-- Remove the URL tag and use a direct link -->
+                <a href="{% url 'ShowJob_Category' 'physician' %}" class="card">
+                    <div class="card-body d-flex align-items-center justify-content-center">
+                        <img src="{% static 'Jobs/Physician.png' %}" alt="Remote Jobs" class="img-fluid me-3" style="max-width: 40px;">
+                        <h5 class="card-title mb-0">Physician & Provider Solutions</h5>
+                    </div>
+                </a>
+            </div>
+        </div>
+      </div>
+  </div>
   
-    <!-- Bottom Separator -->
-    <div class="carousel-separator"></div>
-  
-    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+  <!-- Bottom Separator -->
+  <div class="carousel-separator"></div>
+
+  <!-- Carousel Controls -->
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
       <span class="carousel-control-prev-icon" aria-hidden="true"></span>
       <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
       <span class="carousel-control-next-icon" aria-hidden="true"></span>
       <span class="visually-hidden">Next</span>
-    </button>
-  </div>
+  </button>
+</div>
 
   <style>
     /* Section Styling */
