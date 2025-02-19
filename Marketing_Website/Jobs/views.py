@@ -33,9 +33,10 @@ def extract_values(html):
         return None, None
 
 def Homepage(request):
-    recent_jobs = Job.objects.all().order_by('-post_date')[:8]  # Fetch latest 8 jobs
-    print(recent_jobs)
-    return render(request,'jobs/index.html', {'recent_jobs':recent_jobs})
+    recent_jobs = Job.objects.all().order_by('-post_date')[:8]
+    num_of_jobs = Job.objects.count()  # Efficient counting with aggregate
+    print(num_of_jobs)
+    return render(request, 'jobs/index.html', {'recent_jobs': recent_jobs, "num_of_jobs": num_of_jobs})
 
 def get_text(element):
     """Extract text from an XML element, return an empty string if None."""
@@ -136,7 +137,30 @@ def Extract_Data_From_XML(request):
 
 
 def ShowJobs(request):
-    all_jobs = Job.objects.all().order_by('post_date')  # Order jobs by 'created_at' or another field
+    all_jobs = Job.objects.all().order_by('post_date')  # Default: show all jobs
+
+    if request.method == "POST":
+        category = request.POST.get("category", "").strip()
+        subcategory = request.POST.get("subcategory", "").strip()
+        discipline = request.POST.get("discipline", "").strip()
+        specialty = request.POST.get("specialty", "").strip()
+        search_query = request.POST.get("search_query", "").strip()
+
+        # Apply filters if values are provided
+        if category:
+            print(category)
+            all_jobs = Job.objects.filter(category=category).order_by('post_date')
+        if subcategory:
+            all_jobs = all_jobs.filter(subcategory=subcategory)
+        if discipline:
+            all_jobs = all_jobs.filter(discipline=discipline)
+        if specialty:
+            all_jobs = all_jobs.filter(specialty=specialty)
+        if search_query:
+            all_jobs = all_jobs.filter(title__icontains=search_query)  # Search in title field
+
+    # Calculate the number of jobs
+    num_of_jobs = all_jobs.count()
     
     paginator = Paginator(all_jobs, 18)  # Show 18 jobs per page
     
@@ -145,7 +169,7 @@ def ShowJobs(request):
 
     print(page_obj.object_list)  # Check the jobs on the current page
 
-    return render(request, 'jobs/view_jobs.html', {'page_obj': page_obj, 'specialities': specialities, "category_subcategories": category_subcategories, "categories_discipline":categories_discipline })
+    return render(request, 'jobs/view_jobs.html', {'page_obj': page_obj, 'specialities': specialities, "category_subcategories": category_subcategories, "categories_discipline":categories_discipline, "num_of_jobs":num_of_jobs })
 
 def job_detail(request, job_title_id):
     job = get_object_or_404(Job, job_title_id=job_title_id)
@@ -156,9 +180,9 @@ def ShowJob_Category(request, category):
     print(category)
     category_filters = {
         "travel": ["GS US Travel"],
-        "per-diem": ["GS US Per Diem", "GS US Provider Perm"],
+        "per-diem": ["GS US Per Diem"],
         "allied": ["GS US Allied"],
-        "physician": ["GS US Locums"],
+        "physician": ["GS US Locums", "GS US Provider Perm"],
     }
 
     # Fetch jobs based on category, default to an empty list if category not found
