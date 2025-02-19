@@ -229,16 +229,6 @@
 }
 
 /* Fade In Animation */
-@keyframes fadeInUp {
-  from {
-      opacity: 0;
-      transform: translateY(30px);
-  }
-  to {
-      opacity: 1;
-      transform: translateY(0);
-  }
-}
 
 .card-link {
   text-decoration: none;
@@ -250,7 +240,6 @@
   background: white;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease-in-out;
-  text-align: center;
   padding: 20px;
 }
 
@@ -310,7 +299,7 @@
   <div class="carousel-caption-custom">
       <h4>{{ num_of_jobs }} Jobs Available</h4>
       <h2 class="fw-bold">Search For Your Next Job</h2>
-      <a href="{% url 'ShowJobs' %}" class="btn explore-btn text-white">
+      <a href="{% url 'ShowJob_Category' 'All' %}" class="btn explore-btn text-white">
           <i class="fas fa-search"></i> Explore Jobs
       </a>
   </div>

@@ -167,7 +167,7 @@
         <div class="col-lg-3 mb-4">
             <div class="filter-sidebar p-3 rounded shadow">
                 <h5 class="mb-3"><i class="fas fa-filter"></i> Filters</h5>
-                <form method="POST" action="{% url 'ShowJobs' %}">
+                <form method="POST" action="{% url 'ShowJob_Category' job_types %}">
                     {% csrf_token %}
 
                 <!-- 🔎 Search Box -->
@@ -179,28 +179,36 @@
 
                 <!-- 📂 Job Type -->
                 <label class="form-label">Category</label>
-                <select class="form-select mb-3" name="category" id="category" onchange="updateSubCategory(); updateDiscipline();">
+                <select class="form-select mb-3" name="category" id="category" onchange="updateDiscipline();">
                     <option value="">Select Category</option>
                     {% for category, subcategories in category_subcategories %}
-                        <option value="{{ category }}">{{ category }}</option>
+                        <option value="{{ category }}" {% if category == selected_category %}selected{% endif %}>
+                            {{ category }}
+                        </option>
                     {% endfor %}
                 </select>
 
-                <!-- 📂 Subcategory -->
+                <!-- 📂 Subcategory 
                 <select class="form-select mb-3" name="subcategory" id="subcategory">
                     <option value="">Select Subcategory</option>
                 </select>
+                -->
 
                 <!-- 📂 Discipline -->
                 <select class="form-select mb-3" name="discipline" id="discipline">
                     <option value="">Select Discipline</option>
+                    {% if selected_discipline %}
+                        <option value="{{ selected_discipline }}" selected>{{ selected_discipline }}</option>
+                    {% endif %}
                 </select>
 
                 <!-- 🏥 Speciality -->
                 <label class="form-label">Specialty</label>
                 <select class="form-select mb-3" name="specialty">
                     {% for specialty in specialities %}
-                        <option>{{ specialty }}</option>
+                    <option value="{{ specialty }}" {% if specialty == selected_specialty %}selected{% endif %}>
+                        {{ specialty }}
+                    </option>
                     {% endfor %}
                 </select>
 
@@ -217,7 +225,7 @@
                 {% for job in page_obj %}
                 <div class="col">
                     <div class="card h-100">
-                        <div class="card-body d-flex align-items-center">
+                        <div class="card-body d-flex flex-column">
                             <div class="d-flex w-100 justify-content-between align-items-center">
                                 <h5 class="card-title mb-0">{{ job.job_title }}</h5>
                                 <img src="{% static 'Jobs/sec_logo.svg' %}" class="card-img" alt="Job Image" style="height: 50px; width: auto; max-width: 50px; object-fit: contain;">
@@ -304,18 +312,31 @@
     }
 
     function updateDiscipline() {
-        const category = document.getElementById("category").value;
-        const DisciplineSelect = document.getElementById("discipline");
+        let category = document.getElementById("category").value;
+        let disciplineSelect = document.getElementById("discipline");
+        let selectedDiscipline = "{{ selected_discipline }}";  // Fetch from Jinja
 
-        DisciplineSelect.innerHTML = "<option value=''>Select Discipline</option>";
+        disciplineSelect.innerHTML = '<option value="">Select Discipline</option>';
+        
+        if (category in disciplines) {
+            disciplines[category].forEach(discipline => {
+                let option = document.createElement("option");
+                option.value = discipline;
+                option.textContent = discipline;
 
-        (disciplines[category] || []).forEach(discipline => {
-            const option = document.createElement("option");
-            option.value = discipline;
-            option.textContent = discipline;
-            DisciplineSelect.appendChild(option);
-        });
+                // Mark the selected discipline
+                if (discipline === selectedDiscipline) {
+                    option.selected = true;
+                }
+
+                disciplineSelect.appendChild(option);
+            });
+        }
     }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        updateDiscipline();
+    });
 </script>
 
 {% endblock %}
