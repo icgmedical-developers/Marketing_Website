@@ -111,7 +111,7 @@ def Extract_Data_From_XML(request):
                         "specialty": get_text(job.find("specialty")),
                         "business_type": get_text(job.find("businessType")),
                         "zipcode": get_text(job.find("zipcode")),
-                        "positions": int(get_text(job.find("positions")) or 0),  
+                        "positions": int(get_text(job.find("positions")).replace(",", "") or 0),
                         "employer": get_text(job.find("employer")),
                         "discipline": get_text(job.find("Discipline")),
                         "category": get_text(job.find("category")),
