@@ -18,6 +18,15 @@
             background-color: #f4f4f4;
             padding-top: 90px;
             font-family: 'Poppins', sans-serif;
+            height: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; /* Ensures full viewport height */
         }
 
         .btn-outline-secondary:hover{
@@ -26,6 +35,10 @@
 
         .text-reset{
             text-decoration: none;
+        }
+        footer {
+            margin-top: auto;
+            flex-shrink: 0; /* Keeps footer at the bottom */
         }
 
     </style>
