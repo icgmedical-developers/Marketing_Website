@@ -231,14 +231,14 @@
                                 <img src="{% static 'Jobs/sec_logo.svg' %}" class="card-img" alt="Job Image" style="height: 50px; width: auto; max-width: 50px; object-fit: contain;">
                             </div>
                             <!-- Location & Salary -->
-                            <div class="d-flex align-items-center gap-3 mt-2">
-                                <div class="rounded-badge">
+                            <div class="d-flex align-items-center gap-3 mt-2 flex-wrap">
+                                <div class="rounded-badge d-flex align-items-center">
                                     <i class="fas fa-map-marker-alt text-danger"></i>
-                                    <span>{{ job.state }}</span>
+                                    <span class="ms-1 text-truncate">{{ job.state }}</span>
                                 </div>
-                                <div class="rounded-badge">
+                                <div class="rounded-badge d-flex align-items-center">
                                     <i class="fas fa-dollar-sign text-success"></i>
-                                    <span>Competitive</span>
+                                    <span class="ms-1 text-truncate salary-text">Competitive</span>
                                 </div>
                             </div>
 
